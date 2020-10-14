@@ -4,3 +4,9 @@ spring:
     url: jdbc:mysql://localhost:3306/buynow
     username: root
     password: password
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
