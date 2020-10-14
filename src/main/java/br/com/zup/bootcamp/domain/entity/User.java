@@ -36,7 +36,7 @@ public class User implements Serializable {
     @Deprecated
     public User(){}
 
-    public User(@Email @NotBlank String login, @Length(min = 6) @NotBlank String password, EntityManager manager) {
+    public User(@Email @NotBlank String login, @Length(min = 6) @NotBlank String password) {
         this.login = login;
         this.password = password;
         this.registerDate = LocalDateTime.now();

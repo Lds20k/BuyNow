@@ -3,7 +3,6 @@ package br.com.zup.bootcamp.controller.model;
 import br.com.zup.bootcamp.domain.entity.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.persistence.EntityManager;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -38,11 +37,10 @@ public class UserRegisterRequest {
 
     /**
      * @return User com os atributos convertidos da request e com a password criptografada
-     * @param manager
      */
-    public User toModel(EntityManager manager){
+    public User toModel(){
         this.encode();
-        return new User(this.login, this.password, manager);
+        return new User(this.login, this.password);
     }
 
     public String getLogin() {

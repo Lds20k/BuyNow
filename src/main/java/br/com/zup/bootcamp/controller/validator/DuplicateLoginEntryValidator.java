@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
-// Intrinsic charge = 3
+// Intrinsic charge = 2
 @Component
 public class DuplicateLoginEntryValidator implements Validator {
 

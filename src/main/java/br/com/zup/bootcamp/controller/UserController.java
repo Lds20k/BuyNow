@@ -40,7 +40,7 @@ public class UserController {
     @PostMapping
     @Transactional
     public ResponseEntity register(@Validated @RequestBody UserRegisterRequest request, UriComponentsBuilder builder){
-        User newUser = request.toModel(manager);
+        User newUser = request.toModel();
         manager.persist(newUser);
         return ResponseEntity.created(builder.path(path.concat("/{id}")).buildAndExpand(newUser.getId()).toUri()).build();
     }
