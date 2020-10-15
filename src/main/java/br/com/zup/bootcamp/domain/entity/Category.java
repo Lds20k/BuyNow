@@ -17,25 +17,25 @@ public class Category implements Serializable {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    @NotBlank
+    @NotBlank(message = "{notblank}")
     @Column(nullable = false, unique = true)
     private String name;
 
     @ManyToOne
     @JoinColumn(name = "predecessor_id", referencedColumnName = "id")
-    private Category predecessorCategory;
+    private Category predecessor;
 
-    @OneToMany(mappedBy = "predecessorCategory", cascade = CascadeType.ALL)
-    private List<Category> sucessorCategories = new ArrayList<>();
+    @OneToMany(mappedBy = "predecessor", cascade = CascadeType.ALL)
+    private List<Category> sucessors = new ArrayList<>();
 
     @Deprecated
     public Category(){};
 
-    public Category(@NotBlank String name, Category predecessorCategory) {
+    public Category(@NotBlank String name, Category predecessor) {
         super();
         this.name = name;
-        this.predecessorCategory = predecessorCategory;
-        this.predecessorCategory.sucessorCategories.add(this);
+        this.predecessor = predecessor;
+        this.predecessor.sucessors.add(this);
     }
 
     public void setId(String id) {

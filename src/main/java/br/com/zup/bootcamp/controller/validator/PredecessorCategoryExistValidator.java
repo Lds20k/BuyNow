@@ -1,6 +1,6 @@
 package br.com.zup.bootcamp.controller.validator;
 
-import br.com.zup.bootcamp.controller.model.CategoryCreationRequest;
+import br.com.zup.bootcamp.controller.model.request.CategoryCreationRequest;
 import br.com.zup.bootcamp.domain.entity.Category;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,9 +34,9 @@ public class PredecessorCategoryExistValidator implements Validator {
     @Transactional
     public void validate(Object o, Errors errors) {
         CategoryCreationRequest request = (CategoryCreationRequest) o;
-        if(request.getPredecessorCategory() == null) return;
+        if(request.getPredecessor() == null) return;
 
-        String predecessorCategory = request.getPredecessorCategory();
+        String predecessorCategory = request.getPredecessor();
 
         Query query = manager.createQuery(
                 "select category.id from " + Category.class.getName() + " as category where category.id = :id"
@@ -45,7 +45,7 @@ public class PredecessorCategoryExistValidator implements Validator {
         List category = query.getResultList();
 
         if(category.isEmpty()){
-            errors.rejectValue("predecessorCategory", null, "Predecessor Category not exist.");
+            errors.rejectValue("predecessor", null, "Predecessor Category not exist.");
         }
     }
 }

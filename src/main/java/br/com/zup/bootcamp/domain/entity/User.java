@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -19,24 +20,25 @@ public class User implements Serializable {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    @Email
-    @NotBlank
+    @Email(message = "{email}")
+    @NotBlank(message = "{notblank}")
     @Column(nullable = false, unique = true)
     private String login;
 
-    @NotBlank
+    @NotBlank(message = "{notblank}")
+    @Size(min = 6, message = "{size.min}")
     @Length(min = 6)
     @Column(nullable = false)
     private String password;
 
-    @PastOrPresent
+    @PastOrPresent(message = "{pastorpresent}")
     @Column(nullable = false)
     private LocalDateTime registerDate;
 
     @Deprecated
     public User(){}
 
-    public User(@Email @NotBlank String login, @Length(min = 6) @NotBlank String password) {
+    public User(@Email @NotBlank String login, @Size(min = 6) @Length(min = 6) @NotBlank String password) {
         this.login = login;
         this.password = password;
         this.registerDate = LocalDateTime.now();

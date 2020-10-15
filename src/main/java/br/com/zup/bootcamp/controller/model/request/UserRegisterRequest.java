@@ -1,4 +1,4 @@
-package br.com.zup.bootcamp.controller.model;
+package br.com.zup.bootcamp.controller.model.request;
 
 import br.com.zup.bootcamp.domain.entity.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,12 +10,12 @@ import javax.validation.constraints.Size;
 // Intrinsic charge = 1
 public class UserRegisterRequest {
 
-    @Email
-    @NotBlank
+    @Email(message = "{email}")
+    @NotBlank(message = "{notblank}")
     private String login;
 
-    @NotBlank
-    @Size(min = 6)
+    @NotBlank(message = "{notblank}")
+    @Size(min = 6, message = "{size.min}")
     private String password;
 
     /**

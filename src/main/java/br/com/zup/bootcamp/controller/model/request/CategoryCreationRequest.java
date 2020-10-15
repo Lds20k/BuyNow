@@ -1,4 +1,4 @@
-package br.com.zup.bootcamp.controller.model;
+package br.com.zup.bootcamp.controller.model.request;
 
 import br.com.zup.bootcamp.domain.entity.Category;
 
@@ -7,18 +7,18 @@ import javax.validation.constraints.NotBlank;
 // Intrinsic charge = 1
 public class CategoryCreationRequest {
 
-    @NotBlank
+    @NotBlank(message = "{notblank}")
     private String name;
 
-    private String predecessorCategory;
+    private String predecessor;
 
     public CategoryCreationRequest(@NotBlank String name) {
         this.name = name;
     }
 
-    public CategoryCreationRequest(@NotBlank String name, String predecessorCategory) {
+    public CategoryCreationRequest(@NotBlank String name, String predecessor) {
         this.name = name;
-        this.predecessorCategory = predecessorCategory;
+        this.predecessor = predecessor;
     }
 
     /**
@@ -26,16 +26,16 @@ public class CategoryCreationRequest {
      */
     public Category toModel() {
         Category predecessorCategory = null;
-        if(this.predecessorCategory != null && !this.predecessorCategory.isBlank()){
+        if(this.predecessor != null && !this.predecessor.isBlank()){
             predecessorCategory = new Category();
-            predecessorCategory.setId(this.predecessorCategory);
+            predecessorCategory.setId(this.predecessor);
         }
 
         return new Category(this.name, predecessorCategory);
     }
 
-    public String getPredecessorCategory() {
-        return predecessorCategory;
+    public String getPredecessor() {
+        return predecessor;
     }
 
     public String getName() {

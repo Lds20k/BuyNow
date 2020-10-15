@@ -1,6 +1,6 @@
 package br.com.zup.bootcamp.controller;
 
-import br.com.zup.bootcamp.controller.model.CategoryCreationRequest;
+import br.com.zup.bootcamp.controller.model.request.CategoryCreationRequest;
 import br.com.zup.bootcamp.controller.validator.DuplicateCategoryEntryValidator;
 import br.com.zup.bootcamp.controller.validator.PredecessorCategoryExistValidator;
 import br.com.zup.bootcamp.domain.entity.Category;

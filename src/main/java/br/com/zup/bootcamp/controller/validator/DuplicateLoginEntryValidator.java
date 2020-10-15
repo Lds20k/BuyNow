@@ -1,6 +1,6 @@
 package br.com.zup.bootcamp.controller.validator;
 
-import br.com.zup.bootcamp.controller.model.UserRegisterRequest;
+import br.com.zup.bootcamp.controller.model.request.UserRegisterRequest;
 import br.com.zup.bootcamp.domain.entity.User;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

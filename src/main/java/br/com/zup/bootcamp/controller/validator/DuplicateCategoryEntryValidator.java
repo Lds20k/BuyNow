@@ -1,6 +1,6 @@
 package br.com.zup.bootcamp.controller.validator;
 
-import br.com.zup.bootcamp.controller.model.CategoryCreationRequest;
+import br.com.zup.bootcamp.controller.model.request.CategoryCreationRequest;
 import br.com.zup.bootcamp.domain.entity.Category;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

@@ -1,6 +1,6 @@
 package br.com.zup.bootcamp.controller;
 
-import br.com.zup.bootcamp.controller.model.UserRegisterRequest;
+import br.com.zup.bootcamp.controller.model.request.UserRegisterRequest;
 import br.com.zup.bootcamp.controller.validator.DuplicateLoginEntryValidator;
 import br.com.zup.bootcamp.domain.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
