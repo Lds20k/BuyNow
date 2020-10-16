@@ -9,15 +9,13 @@ import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.util.List;
 
 // Intrinsic charge = 3
 @Component
 public class PredecessorCategoryExistValidator implements Validator {
 
     @PersistenceContext
-    EntityManager manager;
+    private EntityManager manager;
 
     /**
      * @return Caso a classe seja a mesma que sera validada, retorna true
@@ -38,14 +36,10 @@ public class PredecessorCategoryExistValidator implements Validator {
 
         String predecessorCategory = request.getPredecessor();
 
-        Query query = manager.createQuery(
-                "select category.id from " + Category.class.getName() + " as category where category.id = :id"
-        );
-        query.setParameter("id", predecessorCategory);
-        List category = query.getResultList();
+        Category category = manager.find(Category.class, request.getPredecessor());
 
-        if(category.isEmpty()){
-            errors.rejectValue("predecessor", null, "Predecessor Category not exist.");
+        if(category == null){
+            errors.rejectValue("predecessor", null, "predecessor category not exist.");
         }
     }
 }

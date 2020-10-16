@@ -11,10 +11,10 @@ import javax.validation.constraints.Size;
 public class UserRegisterRequest {
 
     @Email(message = "{email}")
-    @NotBlank(message = "{notblank}")
+    @NotBlank(message = "{mandatory}")
     private String login;
 
-    @NotBlank(message = "{notblank}")
+    @NotBlank(message = "{mandatory}")
     @Size(min = 6, message = "{size.min}")
     private String password;
 

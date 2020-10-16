@@ -6,9 +6,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
-// Intrinsic charge = 0
+// Intrinsic charge = 1
 @Entity
 public class Category implements Serializable {
 
@@ -26,16 +26,23 @@ public class Category implements Serializable {
     private Category predecessor;
 
     @OneToMany(mappedBy = "predecessor", cascade = CascadeType.ALL)
-    private List<Category> sucessors = new ArrayList<>();
+    private Collection<Category> successors = new ArrayList<>();
+
+    @OneToMany(mappedBy = "category")
+    private Collection<Product> products = new ArrayList<>();
 
     @Deprecated
     public Category(){};
+
+    public Category(@NotBlank String name) {
+        this.name = name;
+    }
 
     public Category(@NotBlank String name, Category predecessor) {
         super();
         this.name = name;
         this.predecessor = predecessor;
-        this.predecessor.sucessors.add(this);
+        this.predecessor.successors.add(this);
     }
 
     public void setId(String id) {
@@ -44,5 +51,11 @@ public class Category implements Serializable {
 
     public String getId() {
         return id;
+    }
+
+    public static Category createCategoryByIdFactory(String id){
+        Category category = new Category();
+        category.setId(id);
+        return category;
     }
 }

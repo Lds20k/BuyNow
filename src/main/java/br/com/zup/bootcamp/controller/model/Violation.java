@@ -1,5 +1,6 @@
 package br.com.zup.bootcamp.controller.model;
 
+// Intrinsic charge = 0
 public class Violation {
     private String field;
     private String message;

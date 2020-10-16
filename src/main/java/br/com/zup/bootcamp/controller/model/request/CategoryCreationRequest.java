@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 // Intrinsic charge = 1
 public class CategoryCreationRequest {
 
-    @NotBlank(message = "{notblank}")
+    @NotBlank(message = "{mandatory}")
     private String name;
 
     private String predecessor;
@@ -25,13 +25,10 @@ public class CategoryCreationRequest {
      * @return Category com os atributos convertidos e, caso houver, a categoria antecessora atribuída
      */
     public Category toModel() {
-        Category predecessorCategory = null;
-        if(this.predecessor != null && !this.predecessor.isBlank()){
-            predecessorCategory = new Category();
-            predecessorCategory.setId(this.predecessor);
-        }
+        if(this.predecessor.isBlank()) return new Category(this.name);
 
-        return new Category(this.name, predecessorCategory);
+        Category predecessorCategoryEntity = Category.createCategoryByIdFactory(this.predecessor);
+        return new Category(this.name, predecessorCategoryEntity);
     }
 
     public String getPredecessor() {

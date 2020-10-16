@@ -5,6 +5,7 @@ import br.com.zup.bootcamp.controller.model.Violation;
 import java.util.ArrayList;
 import java.util.List;
 
+// Intrinsic charge = 1
 public class ValidationErrorResponse {
     private List<Violation> violations = new ArrayList<>();
 

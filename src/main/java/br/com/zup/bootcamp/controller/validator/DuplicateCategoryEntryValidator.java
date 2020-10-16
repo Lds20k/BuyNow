@@ -16,7 +16,7 @@ import java.util.List;
 public class DuplicateCategoryEntryValidator implements Validator {
 
     @PersistenceContext
-    EntityManager manager;
+    private EntityManager manager;
 
     /**
      * @return Caso a classe seja a mesma que sera validada, retorna true
@@ -42,7 +42,7 @@ public class DuplicateCategoryEntryValidator implements Validator {
         List category = query.getResultList();
 
         if(!category.isEmpty()){
-            errors.rejectValue("name", null, "Category name already registered");
+            errors.rejectValue("name", null, "category name already registered");
         }
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
 public class DuplicateLoginEntryValidator implements Validator {
 
     @PersistenceContext
-    EntityManager manager;
+    private EntityManager manager;
 
     /**
      * @return Caso a classe seja a mesma que sera validada, retorna true
@@ -44,7 +44,7 @@ public class DuplicateLoginEntryValidator implements Validator {
         List user = query.getResultList();
 
         if (!user.isEmpty()){
-            errors.rejectValue("login", null, "This login already exist.");
+            errors.rejectValue("login", null, "login already registered.");
         }
     }
 }

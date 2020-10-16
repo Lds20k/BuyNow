@@ -23,7 +23,8 @@ public class MethodArgumentNotValidExceptionHandler {
 
         ValidationErrorResponse response = new ValidationErrorResponse();
         for (FieldError fieldError : result.getFieldErrors()){
-            response.add( new Violation(fieldError.getField(), fieldError.getDefaultMessage()) );
+            String field = fieldError.getField();
+            response.add( new Violation(field,  field + " " + fieldError.getDefaultMessage()) );
         }
 
         return ResponseEntity.badRequest().body(response);
