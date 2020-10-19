@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
-// Intrinsic charge = 1
+// Intrinsic charge = 2
 @Entity
 public class User implements Serializable {
 
@@ -22,23 +22,26 @@ public class User implements Serializable {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    @Email(message = "{email}")
-    @NotBlank(message = "{notblank}")
+    @Email
+    @NotBlank
     @Column(nullable = false, unique = true)
     private String login;
 
-    @NotBlank(message = "{notblank}")
-    @Size(min = 6, message = "{size.min}")
+    @NotBlank
+    @Size(min = 6)
     @Length(min = 6)
     @Column(nullable = false)
     private String password;
 
-    @PastOrPresent(message = "{pastorpresent}")
+    @PastOrPresent
     @Column(nullable = false)
     private LocalDateTime registerDate;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Collection<Product> products = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Collection<Opinion> opinions = new ArrayList<>();
 
     @Deprecated
     public User(){}

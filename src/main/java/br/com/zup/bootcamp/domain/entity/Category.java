@@ -17,7 +17,7 @@ public class Category implements Serializable {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    @NotBlank(message = "{notblank}")
+    @NotBlank
     @Column(nullable = false, unique = true)
     private String name;
 
