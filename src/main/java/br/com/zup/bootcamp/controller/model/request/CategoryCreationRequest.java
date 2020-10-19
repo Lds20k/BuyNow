@@ -12,10 +12,6 @@ public class CategoryCreationRequest {
 
     private String predecessor;
 
-    public CategoryCreationRequest(@NotBlank String name) {
-        this.name = name;
-    }
-
     public CategoryCreationRequest(@NotBlank String name, String predecessor) {
         this.name = name;
         this.predecessor = predecessor;
@@ -25,7 +21,7 @@ public class CategoryCreationRequest {
      * @return Category com os atributos convertidos e, caso houver, a categoria antecessora atribuída
      */
     public Category toModel() {
-        if(this.predecessor.isBlank()) return new Category(this.name);
+        if(this.predecessor == null) return new Category(this.name);
 
         Category predecessorCategoryEntity = Category.createCategoryByIdFactory(this.predecessor);
         return new Category(this.name, predecessorCategoryEntity);

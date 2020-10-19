@@ -23,7 +23,6 @@ public class UserRegisterRequest {
      * @param password String para senha com o tamanho mínimo de seis caracteres e em formato plain text
      **/
     public UserRegisterRequest(@Email @NotBlank String login, @NotBlank @Size(min = 6) String password){
-        super();
         this.login = login;
         this.password = password;
     }

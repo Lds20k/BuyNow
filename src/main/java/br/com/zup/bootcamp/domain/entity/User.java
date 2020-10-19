@@ -10,8 +10,10 @@ import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 
-// Intrinsic charge = 0
+// Intrinsic charge = 1
 @Entity
 public class User implements Serializable {
 
@@ -34,6 +36,9 @@ public class User implements Serializable {
     @PastOrPresent(message = "{pastorpresent}")
     @Column(nullable = false)
     private LocalDateTime registerDate;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Collection<Product> products = new ArrayList<>();
 
     @Deprecated
     public User(){}

@@ -5,11 +5,10 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 // Intrinsic charge = 1
 @Entity
-public class Characteristic implements Serializable {
+public class Image {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -18,11 +17,7 @@ public class Characteristic implements Serializable {
 
     @NotBlank
     @Column(nullable = false)
-    private String title;
-
-    @NotBlank
-    @Column(nullable = false)
-    private String value;
+    private String link;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,11 +25,10 @@ public class Characteristic implements Serializable {
     private Product product;
 
     @Deprecated
-    public Characteristic(){}
+    public Image(){}
 
-    public Characteristic(@NotBlank String title, @NotBlank String value, @NotNull Product product) {
-        this.title = title;
-        this.value = value;
+    public Image(@NotBlank String link, @NotNull Product product) {
+        this.link = link;
         this.product = product;
     }
 }

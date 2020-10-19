@@ -1,20 +1,27 @@
 package br.com.zup.bootcamp.controller;
 
+import br.com.zup.bootcamp.controller.model.Uploader;
+import br.com.zup.bootcamp.controller.model.request.AddImagesRequest;
 import br.com.zup.bootcamp.controller.model.request.ProductRegisterRequest;
 import br.com.zup.bootcamp.controller.validator.ProductCategoryExistValidator;
+import br.com.zup.bootcamp.domain.entity.Image;
 import br.com.zup.bootcamp.domain.entity.Product;
+import br.com.zup.bootcamp.domain.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Collection;
 
-// Intrinsic charge = 3
+// Intrinsic charge = 8
 @RestController
 @RequestMapping(ProductController.path)
 public class ProductController {
@@ -25,11 +32,11 @@ public class ProductController {
     private EntityManager manager;
 
     @Autowired
-    ProductCategoryExistValidator productCategoryExistValidator;
+    Uploader uploader;
 
-    @InitBinder
+    @InitBinder(value = path)
     public void init(WebDataBinder binder){
-        binder.addValidators(productCategoryExistValidator);
+        binder.addValidators(new ProductCategoryExistValidator());
     }
 
     /**
@@ -39,9 +46,36 @@ public class ProductController {
      */
     @PostMapping
     @Transactional
-    public ResponseEntity register(@Validated @RequestBody ProductRegisterRequest request, UriComponentsBuilder builder){
-        Product newProduct = request.toModel();
+    public ResponseEntity register(@Validated @RequestBody ProductRegisterRequest request, UriComponentsBuilder builder, @RequestHeader("user") String userId){
+        User user = manager.find(User.class, userId);
+        Product newProduct = request.toModel(user);
+
         manager.persist(newProduct);
         return ResponseEntity.created(builder.path(path.concat("/{id}")).buildAndExpand(newProduct.getId()).toUri()).build();
+    }
+
+    /**
+     * @param request Body da request com as imagens
+     * @param id Id do produto que sera adicionada a imagem
+     * @param userId Id do usuário
+     * @return Caso bem sucedido retorna HttpStatus 200
+     */
+    @PostMapping("/{id}/image")
+    @Transactional
+    public ResponseEntity addImage(@Validated AddImagesRequest request, @PathVariable("id") String id, @RequestHeader("user") String userId){
+        User userEntity = manager.find(User.class, userId);
+
+        Product productEntity = manager.find(Product.class, id);
+
+        if(!productEntity.isUserOwner(userEntity)){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        Collection<Image> images = request.toModel(productEntity, uploader);
+        productEntity.setImages(images);
+
+        manager.merge(productEntity);
+
+        return ResponseEntity.ok().build();
     }
 }

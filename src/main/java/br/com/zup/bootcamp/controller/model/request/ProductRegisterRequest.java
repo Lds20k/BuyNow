@@ -3,6 +3,7 @@ package br.com.zup.bootcamp.controller.model.request;
 import br.com.zup.bootcamp.domain.entity.Category;
 import br.com.zup.bootcamp.domain.entity.Characteristic;
 import br.com.zup.bootcamp.domain.entity.Product;
+import br.com.zup.bootcamp.domain.entity.User;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -60,11 +61,12 @@ public class ProductRegisterRequest {
     }
 
     /**
+     * @param user User que é dono do produto, não pode ser nulo
      * @return Product com os atributos da request, categoria e as características convertidas
      */
-    public Product toModel() {
+    public Product toModel(@NotNull User user) {
         Category categoryEntity = Category.createCategoryByIdFactory(this.category);
-        Product productEntity = new Product(this.name, this.price, this.availableQuantity, this.description, categoryEntity);
+        Product productEntity = new Product(this.name, this.price, this.availableQuantity, this.description, categoryEntity, user);
 
         Collection<Characteristic> characteristicsEntities = new ArrayList<>();
         for (CharacteristicRequest characteristic : this.characteristics){

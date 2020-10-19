@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
-// Intrinsic charge = 2
+// Intrinsic charge = 3
 @Entity
 public class Product implements Serializable {
 
@@ -51,13 +51,25 @@ public class Product implements Serializable {
     @Column(nullable = false)
     private LocalDateTime creationDate;
 
-    public Product(@NotBlank String name, @DecimalMin("0.01") @NotNull BigDecimal price, @Min(1) @NotNull int availableQuantity, @NotBlank @Length(max = 1000) String description, @NotNull Category category) {
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Collection<Image> images = new ArrayList<>();
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, referencedColumnName = "id")
+    private User user;
+
+    @Deprecated
+    public Product(){}
+
+    public Product(@NotBlank String name, @DecimalMin("0.01") @NotNull BigDecimal price, @Min(1) @NotNull int availableQuantity, @NotBlank @Length(max = 1000) String description, @NotNull Category category, @NotNull User user) {
         this.name = name;
         this.price = price;
         this.availableQuantity = availableQuantity;
         this.description = description;
         this.category = category;
         this.creationDate = LocalDateTime.now();
+        this.user = user;
     }
 
     public String getId() {
@@ -66,5 +78,17 @@ public class Product implements Serializable {
 
     public void setCharacteristics(Collection<Characteristic> characteristics) {
         this.characteristics = characteristics;
+    }
+
+    public void setImages(Collection<Image> images) {
+        this.images = images;
+    }
+
+    public boolean isUserOwner(User userEntity) {
+        return this.user.equals(userEntity);
+    }
+
+    public void addImage(Image image){
+        this.images.add(image);
     }
 }
