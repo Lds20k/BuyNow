@@ -10,8 +10,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
-// Intrinsic charge = 6
+// Intrinsic charge = 11
 @Entity
 public class Product implements Serializable {
 
@@ -132,5 +134,49 @@ public class Product implements Serializable {
 
     public void addImage(Image image){
         this.images.add(image);
+    }
+
+    public Collection<Map<String, String>> characteristicsToCollection(){
+        Collection<Map<String, String>> characteristicsCollection = new ArrayList<>();
+        for(Characteristic characteristic : this.characteristics) {
+            Map<String, String> aux = new HashMap<>();
+            aux.put(characteristic.getTitle(), characteristic.getValue());
+            characteristicsCollection.add(aux);
+        }
+        return characteristicsCollection;
+    }
+
+    public Collection<Map<String, String>> opinionsToCollection(){
+        Collection<Map<String, String>> opinionsCollection = new ArrayList<>();
+        for(Opinion opinion : this.opinions){
+            Map<String, String> aux = new HashMap<>();
+            aux.put(opinion.getTitle(), opinion.getDescription());
+            opinionsCollection.add(aux);
+        }
+        return opinionsCollection;
+    }
+
+    public Float calculateRatingAverage(){
+        int sum = 0;
+        for (Opinion opinion : this.opinions)
+            sum += opinion.getRating();
+        return (float)(sum / this.opinions.size());
+    }
+
+    // Ajustar, criar estrutura genérica para imagesToCollection e questionsToCollection
+    // Pois são basicamente as mesmas coisas
+    public Collection<String> imagesToCollection() {
+        Collection<String> imagesCollection = new ArrayList<>();
+        for(Image image : this.images)
+            imagesCollection.add(image.getLink());
+
+        return imagesCollection;
+    }
+
+    public Collection<String> questionsToCollection() {
+        Collection<String> questionsCollection = new ArrayList<>();
+        for(Question question : this.questions)
+            questionsCollection.add(question.getTitle());
+        return questionsCollection;
     }
 }

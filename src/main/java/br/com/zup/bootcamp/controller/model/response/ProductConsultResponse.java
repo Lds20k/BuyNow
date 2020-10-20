@@ -1,14 +1,13 @@
 package br.com.zup.bootcamp.controller.model.response;
 
-import br.com.zup.bootcamp.domain.entity.*;
+import br.com.zup.bootcamp.domain.entity.Product;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
-// Intrinsic charge = 9
+// Intrinsic charge = 1
 public class ProductConsultResponse {
 
     private Collection<String> images = new ArrayList<>();
@@ -39,36 +38,15 @@ public class ProductConsultResponse {
     public static ProductConsultResponse toResponse(Product productEntity) {
         ProductConsultResponse response = new ProductConsultResponse();
 
-        for(Image image : productEntity.getImages())
-            response.images.add(image.getLink());
-
+        response.images = productEntity.imagesToCollection();
         response.name = productEntity.getName();
         response.price = productEntity.getPrice();
-
-        for(Characteristic characteristic : productEntity.getCharacteristics()) {
-            Map<String, String> aux = new HashMap<>();
-            aux.put(characteristic.getTitle(), characteristic.getValue());
-            response.characteristics.add(aux);
-        }
-
+        response.characteristics = productEntity.characteristicsToCollection();
         response.description = productEntity.getDescription();
-
-        Integer sum = 0;
-        for(Opinion opinion : productEntity.getOpinions()){
-            sum += opinion.getRating();
-
-            Map<String, String> aux = new HashMap<>();
-            aux.put(opinion.getTitle(), opinion.getDescription());
-            response.opinions.add(aux);
-        }
-
-        Integer totalOpinion = productEntity.getOpinions().size();
-        response.rating = sum.floatValue() / totalOpinion;
-        response.totalRatingVotes = totalOpinion;
-
-        for(Question question : productEntity.getQuestions()){
-            response.questions.add(question.getTitle());
-        }
+        response.opinions = productEntity.opinionsToCollection();
+        response.rating = productEntity.calculateRatingAverage();
+        response.totalRatingVotes = productEntity.getOpinions().size();
+        response.questions = productEntity.questionsToCollection();
 
         return response;
     }
