@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
-// Intrinsic charge = 4
+// Intrinsic charge = 6
 @Entity
 public class Product implements Serializable {
 
@@ -61,6 +61,9 @@ public class Product implements Serializable {
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private Collection<Opinion> opinions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private Collection<Question> questions = new ArrayList<>();
 
     @Deprecated
     public Product(){}

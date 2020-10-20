@@ -36,6 +36,7 @@ public @interface ExistInTable {
     /**
      * Usado para que possa ter mais de uma anotação no mesmo objeto
      */
+    @Documented
     @Target({ElementType.FIELD, ElementType.CONSTRUCTOR, ElementType.PARAMETER})
     @Retention(RetentionPolicy.RUNTIME)
     @interface List {

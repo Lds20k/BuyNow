@@ -10,5 +10,4 @@ spring:
     hibernate:
       ddl-auto: update
 
-upload:
-  fake: true
+dev_mode: true

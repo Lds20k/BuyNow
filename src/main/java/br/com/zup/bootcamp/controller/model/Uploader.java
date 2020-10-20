@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class Uploader {
 
     // Configurável no arquivo application.yaml
-    @Value("${upload.fake}")
+    @Value("${dev_mode}")
     public boolean fake;
 
     /**

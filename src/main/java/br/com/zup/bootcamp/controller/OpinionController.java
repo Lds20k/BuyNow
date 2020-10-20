@@ -1,7 +1,6 @@
 package br.com.zup.bootcamp.controller;
 
 import br.com.zup.bootcamp.controller.model.request.AddOpinionRequest;
-import br.com.zup.bootcamp.controller.validator.annotation.ExistInTable;
 import br.com.zup.bootcamp.domain.entity.Opinion;
 import br.com.zup.bootcamp.domain.entity.User;
 import org.springframework.http.HttpStatus;
@@ -27,7 +26,7 @@ public class OpinionController {
 
     /**
      * @param request Body da request com os dados da opinião dada pelo usuário
-     * @param userId Id do usuário que está dando a opnião
+     * @param userId Id do usuário que está dando a opinião
      * @param builder Um UriComponentsBuilder para criar a URI de retorno
      * @return Caso bem sucedido retorna HttpStatus 201, o URI com o local onde foi criado e um body vazia
      */
