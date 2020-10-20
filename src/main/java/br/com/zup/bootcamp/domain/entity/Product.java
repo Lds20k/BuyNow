@@ -86,8 +86,40 @@ public class Product implements Serializable {
         return id;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public Collection<Image> getImages() {
+        return images;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public Collection<Characteristic> getCharacteristics() {
+        return characteristics;
+    }
+
     public void setCharacteristics(Collection<Characteristic> characteristics) {
         this.characteristics = characteristics;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Collection<Opinion> getOpinions() {
+        return opinions;
+    }
+
+    public Collection<Question> getQuestions() {
+        return questions;
     }
 
     public void setImages(Collection<Image> images) {

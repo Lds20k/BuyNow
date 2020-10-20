@@ -2,6 +2,7 @@ package br.com.zup.bootcamp.controller;
 
 import br.com.zup.bootcamp.controller.model.Email;
 import br.com.zup.bootcamp.controller.model.request.AddQuestionRequest;
+import br.com.zup.bootcamp.domain.entity.Product;
 import br.com.zup.bootcamp.domain.entity.Question;
 import br.com.zup.bootcamp.domain.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-// Intrinsic charge = 5
+// Intrinsic charge = 6
 @RestController
 @RequestMapping(QuestionController.path)
 public class QuestionController {
@@ -44,9 +45,10 @@ public class QuestionController {
         }
 
         Question newQuestionEntity = request.toModel(userEntity);
+        Product productEntity = manager.find(Product.class, newQuestionEntity.getProduct().getId());
         manager.persist(newQuestionEntity);
 
-        email.send(userEntity.getEmail(), "You have a new question to your product");
+        email.send(productEntity.getUser().getEmail(), "You have a new question to your product");
 
         return ResponseEntity.created(
                 builder

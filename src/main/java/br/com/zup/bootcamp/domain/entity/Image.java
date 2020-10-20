@@ -31,4 +31,8 @@ public class Image {
         this.link = link;
         this.product = product;
     }
+
+    public String getLink() {
+        return this.link;
+    }
 }

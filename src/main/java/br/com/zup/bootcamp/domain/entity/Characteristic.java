@@ -37,4 +37,12 @@ public class Characteristic implements Serializable {
         this.value = value;
         this.product = product;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getValue() {
+        return value;
+    }
 }

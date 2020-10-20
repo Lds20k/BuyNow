@@ -42,6 +42,9 @@ public class Opinion  implements Serializable {
     @JoinColumn(nullable = false, referencedColumnName = "id")
     private Product product;
 
+    @Deprecated
+    public Opinion() {}
+
     public Opinion(@NotNull @Min(1) @Max(5) Integer rating, @NotBlank String title, @NotBlank @Length(max = 500) String description, User user, Product product) {
         this.rating = rating;
         this.title = title;
@@ -52,5 +55,17 @@ public class Opinion  implements Serializable {
 
     public String getId() {
         return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Integer getRating() {
+        return rating;
     }
 }

@@ -47,4 +47,12 @@ public class Question {
     public String getId() {
         return this.id;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
 }

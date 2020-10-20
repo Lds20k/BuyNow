@@ -3,6 +3,7 @@ package br.com.zup.bootcamp.controller;
 import br.com.zup.bootcamp.controller.model.Uploader;
 import br.com.zup.bootcamp.controller.model.request.AddImagesRequest;
 import br.com.zup.bootcamp.controller.model.request.ProductRegisterRequest;
+import br.com.zup.bootcamp.controller.model.response.ProductConsultResponse;
 import br.com.zup.bootcamp.controller.validator.ProductCategoryExistValidator;
 import br.com.zup.bootcamp.domain.entity.Image;
 import br.com.zup.bootcamp.domain.entity.Product;
@@ -21,7 +22,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Collection;
 
-// Intrinsic charge = 8
+// Intrinsic charge = 9
 @RestController
 @RequestMapping(ProductController.path)
 public class ProductController {
@@ -46,7 +47,7 @@ public class ProductController {
      */
     @PostMapping
     @Transactional
-    public ResponseEntity register(@Validated @RequestBody ProductRegisterRequest request, UriComponentsBuilder builder, @RequestHeader("user") String userId){
+    public ResponseEntity<?> register(@Validated @RequestBody ProductRegisterRequest request, UriComponentsBuilder builder, @RequestHeader("user") String userId){
         User user = manager.find(User.class, userId);
         Product newProduct = request.toModel(user);
 
@@ -62,7 +63,7 @@ public class ProductController {
      */
     @PostMapping("/{id}/image")
     @Transactional
-    public ResponseEntity addImage(@Validated AddImagesRequest request, @PathVariable("id") String id, @RequestHeader("user") String userId){
+    public ResponseEntity<?> addImage(@Validated AddImagesRequest request, @PathVariable("id") String id, @RequestHeader("user") String userId){
         User userEntity = manager.find(User.class, userId);
 
         Product productEntity = manager.find(Product.class, id);
@@ -77,5 +78,18 @@ public class ProductController {
         manager.merge(productEntity);
 
         return ResponseEntity.ok().build();
+    }
+
+    /**
+     * @param id Id do produto que sera consultado
+     * @return Caso bem sucedido retorna HttpStatus 302 e uma body com as informações do produto
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductConsultResponse> consult(@PathVariable String id){
+        Product productEntity = manager.find(Product.class, id);
+        if(productEntity == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+        ProductConsultResponse response = ProductConsultResponse.toResponse(productEntity);
+        return ResponseEntity.status(HttpStatus.FOUND).body(response);
     }
 }
