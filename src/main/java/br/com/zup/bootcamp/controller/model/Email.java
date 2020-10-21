@@ -16,7 +16,10 @@ public class Email {
     private Boolean fake;
 
     public void send(String email, String message){
-        if(fake) logger.info("(Dev) Email send to ".concat(email).concat(", message: ").concat(message));
+        if(fake) {
+            logger.info("(Dev) Email send to ".concat(email).concat(", message: ").concat(message));
+            return;
+        }
 
         // Código para enviar o email em produção omitido...
         logger.info("Email send to ".concat(email).concat(email).concat(", message: ").concat(message));

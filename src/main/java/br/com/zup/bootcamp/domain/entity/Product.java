@@ -2,6 +2,7 @@ package br.com.zup.bootcamp.domain.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -13,7 +14,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-// Intrinsic charge = 11
+// Intrinsic charge = 12
 @Entity
 public class Product implements Serializable {
 
@@ -31,7 +32,6 @@ public class Product implements Serializable {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @Min(1)
     @NotNull
     @Column(nullable = false)
     private int availableQuantity;
@@ -66,6 +66,9 @@ public class Product implements Serializable {
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private Collection<Question> questions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private Collection<Purchase> purchases = new ArrayList<>();
 
     @Deprecated
     public Product(){}
@@ -124,16 +127,20 @@ public class Product implements Serializable {
         return questions;
     }
 
+    public boolean reduceStock(@Positive Integer quantity) {
+        Assert.isTrue(quantity > 0, "Quantity must be greater than 0");
+        if(quantity > this.availableQuantity) return false;
+
+        this.availableQuantity = this.availableQuantity - quantity;
+        return true;
+    }
+
     public void setImages(Collection<Image> images) {
         this.images = images;
     }
 
     public boolean isUserOwner(User userEntity) {
         return this.user.equals(userEntity);
-    }
-
-    public void addImage(Image image){
-        this.images.add(image);
     }
 
     public Collection<Map<String, String>> characteristicsToCollection(){
@@ -157,10 +164,10 @@ public class Product implements Serializable {
     }
 
     public Float calculateRatingAverage(){
-        int sum = 0;
+        float sum = 0;
         for (Opinion opinion : this.opinions)
             sum += opinion.getRating();
-        return (float)(sum / this.opinions.size());
+        return sum / this.opinions.size();
     }
 
     // Ajustar, criar estrutura genérica para imagesToCollection e questionsToCollection
