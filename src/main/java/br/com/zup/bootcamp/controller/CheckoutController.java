@@ -1,6 +1,6 @@
 package br.com.zup.bootcamp.controller;
 
-import br.com.zup.bootcamp.controller.model.Email;
+import br.com.zup.bootcamp.component.Email;
 import br.com.zup.bootcamp.controller.model.request.PurchaseCreateRequest;
 import br.com.zup.bootcamp.domain.entity.Purchase;
 import br.com.zup.bootcamp.domain.entity.User;
@@ -42,20 +42,20 @@ public class CheckoutController {
     @Transactional
     public ResponseEntity<?> create(@Valid @RequestBody PurchaseCreateRequest request, @RequestHeader("user") String userId, UriComponentsBuilder builder) throws BindException {
         User userEntity = manager.find(User.class, userId);
-        if(userEntity == null){
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        }
+        if(userEntity == null) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
         Purchase newPurchaseEntity = request.toModel(userEntity, manager);
 
         if(newPurchaseEntity.reduceStock()){
             email.send(newPurchaseEntity.getProduct().getUser().getEmail(), "A user has purchase your product!");
             manager.persist(newPurchaseEntity);
+
             if(newPurchaseEntity.getGatewayPayment().equals(GatewayPayment.paypal)){
                 String returnURI = builder
                         .path("/return-paypal/{id}")
                         .buildAndExpand(newPurchaseEntity.getId())
                         .toString();
+
                 return ResponseEntity
                         .status(HttpStatus.FOUND)
                         .body("paypal.com/" + newPurchaseEntity.getId() + "?redirectUrl=" + returnURI);
@@ -65,6 +65,7 @@ public class CheckoutController {
                     .path("/return-pagseguro/{id}")
                     .buildAndExpand(newPurchaseEntity.getId())
                     .toString();
+
             return ResponseEntity
                     .status(HttpStatus.FOUND)
                     .body("pagseguro.com?returnId=" + newPurchaseEntity.getId() + "&redirectUrl=" + returnURI);

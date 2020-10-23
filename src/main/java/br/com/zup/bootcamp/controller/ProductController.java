@@ -1,6 +1,6 @@
 package br.com.zup.bootcamp.controller;
 
-import br.com.zup.bootcamp.controller.model.Uploader;
+import br.com.zup.bootcamp.component.Uploader;
 import br.com.zup.bootcamp.controller.model.request.AddImagesRequest;
 import br.com.zup.bootcamp.controller.model.request.ProductRegisterRequest;
 import br.com.zup.bootcamp.controller.model.response.ProductConsultResponse;

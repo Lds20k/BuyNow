@@ -1,6 +1,6 @@
 package br.com.zup.bootcamp.controller;
 
-import br.com.zup.bootcamp.controller.model.Email;
+import br.com.zup.bootcamp.component.Email;
 import br.com.zup.bootcamp.controller.model.request.AddQuestionRequest;
 import br.com.zup.bootcamp.domain.entity.Product;
 import br.com.zup.bootcamp.domain.entity.Question;

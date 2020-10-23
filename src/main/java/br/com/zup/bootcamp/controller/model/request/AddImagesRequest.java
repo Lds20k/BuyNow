@@ -1,6 +1,6 @@
 package br.com.zup.bootcamp.controller.model.request;
 
-import br.com.zup.bootcamp.controller.model.Uploader;
+import br.com.zup.bootcamp.component.Uploader;
 import br.com.zup.bootcamp.domain.entity.Image;
 import br.com.zup.bootcamp.domain.entity.Product;
 import org.springframework.web.multipart.MultipartFile;

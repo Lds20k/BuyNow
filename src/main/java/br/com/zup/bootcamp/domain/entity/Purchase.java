@@ -1,12 +1,15 @@
 package br.com.zup.bootcamp.domain.entity;
 
 import br.com.zup.bootcamp.enumerated.GatewayPayment;
+import br.com.zup.bootcamp.enumerated.PurchaseStatus;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 // Intrinsic charge = 3
 @Entity
@@ -36,6 +39,9 @@ public class Purchase implements Serializable {
     @JoinColumn(nullable = false, referencedColumnName = "id")
     private User user;
 
+    @OneToMany(mappedBy = "purchase", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Collection<Transaction> transactions = new ArrayList<>();
+
     @Deprecated
     public Purchase() {}
 
@@ -58,6 +64,10 @@ public class Purchase implements Serializable {
         return user;
     }
 
+    public Integer getQuantity() {
+        return quantity;
+    }
+
     public GatewayPayment getGatewayPayment() {
         return gatewayPayment;
     }
@@ -65,4 +75,20 @@ public class Purchase implements Serializable {
     public boolean reduceStock() {
         return product.reduceStock(this.quantity);
     }
+
+    public void addTransaction(Transaction transaction){
+        this.transactions.add(transaction);
+    }
+
+    public boolean allReadySuccessful(){
+        return this.isSuccessful();
+    }
+
+    public boolean isSuccessful() {
+        for(Transaction transaction : this.transactions){
+            if(transaction.getStatus().equals(PurchaseStatus.success)) return  true;
+        }
+        return false;
+    }
+
 }
